@@ -7,11 +7,9 @@
 <http://lv2plug.in/plugins/justOneOctaveUp>
 	a lv2:Plugin ,
 		lv2:AmplifierPlugin ;
-	# TODO: change project to github page
-	lv2:project <http://lv2plug.in/ns/lv2> ;
+	lv2:project <https://github.com/rominator1983/justOneOctaveUp.lv2> ;
 	doap:name "Just one octave up";
-	# TODO: check license
-	doap:license <http://opensource.org/licenses/isc> ;
+	doap:license <https://github.com/rominator1983/justOneOctaveUp.lv2/blob/main/LICENSE.txt> ;
 	lv2:optionalFeature lv2:hardRTCapable ;
 	lv2:port [
 		a lv2:InputPort ,
