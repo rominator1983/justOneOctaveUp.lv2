@@ -20,32 +20,36 @@
 		lv2:symbol "gain" ;
 		lv2:name "Gain" ;
 		lv2:default 0.0 ;
-		lv2:minimum -20.0 ;
+		lv2:minimum 0.0 ;
 		lv2:maximum 50.0 ;
-		units:unit units:db ;
-		lv2:scalePoint [
-			rdfs:label "+5" ;
-			rdf:value 5.0
-		] , [
-			rdfs:label "0" ;
-			rdf:value 0.0
-		] , [
-			rdfs:label "-5" ;
-			rdf:value -5.0
-		] , [
-			rdfs:label "-10" ;
-			rdf:value -10.0
-		]
+	] , [
+		a lv2:InputPort ,
+			lv2:ControlPort ;
+		lv2:index 1 ;
+		lv2:symbol "blend" ;
+		lv2:name "Blend" ;
+		lv2:default 0.75 ;
+		lv2:minimum 0.0 ;
+		lv2:maximum 1.0 ;
+	] , [
+		a lv2:InputPort ,
+			lv2:ControlPort ;
+		lv2:index 2 ;
+		lv2:symbol "silenceThreshold" ;
+		lv2:name "Silence threshold" ;
+		lv2:default 0.0001 ;
+		lv2:minimum 0.0 ;
+		lv2:maximum 0.001 ;
 	] , [
 		a lv2:AudioPort ,
 			lv2:InputPort ;
-		lv2:index 1 ;
+		lv2:index 3 ;
 		lv2:symbol "in" ;
 		lv2:name "In"
 	] , [
 		a lv2:AudioPort ,
 			lv2:OutputPort ;
-		lv2:index 2 ;
+		lv2:index 4 ;
 		lv2:symbol "out" ;
 		lv2:name "Out"
 	] .

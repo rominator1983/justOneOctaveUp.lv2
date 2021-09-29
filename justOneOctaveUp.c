@@ -35,8 +35,10 @@
 typedef enum
 {
    GAIN = 0,
-   INPUT = 1,
-   OUTPUT = 2
+   BLEND = 1,
+   SILENCE_THRESHOLD = 2,
+   INPUT = 3,
+   OUTPUT = 4
 } PortIndex;
 
 typedef enum
@@ -50,6 +52,8 @@ typedef struct
 {
    // Port buffers
    const float *gain;
+   const float *blend;
+   const float *silenceThreshold;
    const float *input;
    float *output;
    float direction;
@@ -134,6 +138,12 @@ connect_port(LV2_Handle instance, uint32_t port, void *data)
    case GAIN:
       octaver->gain = (const float *)data;
       break;
+   case BLEND:
+      octaver->blend = (const float *)data;
+      break;
+   case SILENCE_THRESHOLD:
+      octaver->silenceThreshold = (const float *)data;
+      break;
    case INPUT:
       octaver->input = (const float *)data;
       break;
@@ -157,6 +167,8 @@ run(LV2_Handle instance, uint32_t n_samples)
    Octaver *octaver = (Octaver *)instance;
 
    const float gain = *(octaver->gain);
+   const float blend = *(octaver->blend);
+   const float silenceThreshold = *(octaver->silenceThreshold);
    const float *const input = octaver->input;
    float *const output = octaver->output;
 
@@ -187,7 +199,7 @@ run(LV2_Handle instance, uint32_t n_samples)
       float value2 = input[pos++] * 0.5f * coef;
 
       // TODO: make parameters for this
-      if (value1 > 0.0001f || value1 < -0.0001f || value2 > 0.0001f || value2 < -0.0001f)
+      if (value1 > silenceThreshold || value1 < -silenceThreshold || value2 > silenceThreshold || value2 < -silenceThreshold)
          isSilence = 0;
 
 #ifdef FILE_LOGGING
@@ -237,7 +249,7 @@ run(LV2_Handle instance, uint32_t n_samples)
          fprintf(pFile, "|");
 #endif
          // NOTE: mix with original signal
-         output[pos] = popBuffer(octaver) * 0.75f + input[pos] * 0.25f;
+         output[pos] = popBuffer(octaver) * blend + input[pos] * coef * (1.0 - blend);
       }
       else
       {
@@ -245,8 +257,7 @@ run(LV2_Handle instance, uint32_t n_samples)
          fprintf(pFile, "0");
 #endif
          // NOTE: when there is no data left in the plugin buffer only the original signal is sent to the output
-         // TODO: make parameters for this
-         output[pos] = input[pos] * 0.25f;
+         output[pos] = input[pos] * coef * (1.0 - blend);
       }
    }
 
