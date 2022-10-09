@@ -11,6 +11,8 @@ This plugin however does the octaving by repeating and inverting each half wave 
 
 This approach **cannot** be used to transpose a singal down or up to an arbitrary other interval other than an octave. It is **just one octave up**.
 
+This is a work in progress and it seems I have not solved the latency issue completely. In the meantime one can use [rectifyingOctave.lv2](https://github.com/rominator1983/rectifyingOctave.lv2) which has zero latency and sounds pretty decent after all.
+
 Install
 ===
 Install the pre compiled artifacts from https://github.com/rominator1983/justOneOctaveUp.lv2/releases
